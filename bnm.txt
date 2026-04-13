@@ -1,0 +1,666 @@
+
+================================================================================
+  MAD LAB - ALL 10 PROGRAMS (Java + XML + AndroidManifest)
+  Package: com.example.myapp  | Change this to your actual package name
+================================================================================
+
+NOTE: AndroidManifest.xml is the SAME base for all programs.
+      Only extra tags (like <service>, <receiver>) differ per program.
+      Those are shown inside each program section.
+
+================================================================================
+  BASE AndroidManifest.xml  (used for ALL programs unless noted)
+================================================================================
+
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.myapp">
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/Theme.AppCompat.Light">
+
+        <activity android:name=".MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+    </application>
+</manifest>
+
+
+================================================================================
+  PROGRAM 1 - Hello World (TextView)
+================================================================================
+
+--- activity_main.xml ---
+
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hello World!"
+        android:textSize="30sp"/>
+
+</LinearLayout>
+
+--- MainActivity.java ---
+
+package com.example.myapp;
+import androidx.appcompat.app.AppCompatActivity;
+import android.os.Bundle;
+
+public class MainActivity extends AppCompatActivity {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+    }
+}
+
+--- AndroidManifest.xml --- (use BASE manifest, no changes)
+
+
+================================================================================
+  PROGRAM 2 - Simple Calculator (EditText + Button)
+================================================================================
+
+--- activity_main.xml ---
+
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="20dp">
+
+    <EditText android:id="@+id/num1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter Number 1"
+        android:inputType="numberDecimal"/>
+
+    <EditText android:id="@+id/num2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter Number 2"
+        android:inputType="numberDecimal"/>
+
+    <Button android:id="@+id/btnAdd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add"/>
+
+    <TextView android:id="@+id/result"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="24sp"/>
+
+</LinearLayout>
+
+--- MainActivity.java ---
+
+package com.example.myapp;
+import androidx.appcompat.app.AppCompatActivity;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.*;
+
+public class MainActivity extends AppCompatActivity {
+    EditText num1, num2;
+    TextView result;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        num1 = findViewById(R.id.num1);
+        num2 = findViewById(R.id.num2);
+        result = findViewById(R.id.result);
+
+        findViewById(R.id.btnAdd).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                double a = Double.parseDouble(num1.getText().toString());
+                double b = Double.parseDouble(num2.getText().toString());
+                result.setText("Result: " + (a + b));
+            }
+        });
+    }
+}
+
+--- AndroidManifest.xml --- (use BASE manifest, no changes)
+
+
+================================================================================
+  PROGRAM 3 - Explicit Intent (Two Activities)
+================================================================================
+
+--- activity_main.xml ---
+
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center">
+
+    <Button android:id="@+id/btnGo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Go to Second Activity"/>
+
+</LinearLayout>
+
+--- activity_second.xml ---
+
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="This is Second Activity"
+        android:textSize="24sp"/>
+
+</LinearLayout>
+
+--- MainActivity.java ---
+
+package com.example.myapp;
+import androidx.appcompat.app.AppCompatActivity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+
+public class MainActivity extends AppCompatActivity {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        Button btn = findViewById(R.id.btnGo);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(MainActivity.this, SecondActivity.class);
+                startActivity(i);
+            }
+        });
+    }
+}
+
+--- SecondActivity.java ---
+
+package com.example.myapp;
+import androidx.appcompat.app.AppCompatActivity;
+import android.os.Bundle;
+
+public class SecondActivity extends AppCompatActivity {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_second);
+    }
+}
+
+--- AndroidManifest.xml --- (ADD this inside <application> tag)
+
+        <activity android:name=".SecondActivity"/>
+
+
+================================================================================
+  PROGRAM 4 - RadioButton & CheckBox
+================================================================================
+
+--- activity_main.xml ---
+
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <RadioGroup android:id="@+id/rg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <RadioButton android:id="@+id/rb1" android:text="Male"/>
+        <RadioButton android:id="@+id/rb2" android:text="Female"/>
+    </RadioGroup>
+
+    <CheckBox android:id="@+id/cb1" android:text="Cricket"/>
+    <CheckBox android:id="@+id/cb2" android:text="Football"/>
+
+    <Button android:id="@+id/btnSubmit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Submit"/>
+
+    <TextView android:id="@+id/tvResult"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+</LinearLayout>
+
+--- MainActivity.java ---
+
+package com.example.myapp;
+import androidx.appcompat.app.AppCompatActivity;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.*;
+
+public class MainActivity extends AppCompatActivity {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        RadioGroup rg = findViewById(R.id.rg);
+        CheckBox cb1 = findViewById(R.id.cb1);
+        CheckBox cb2 = findViewById(R.id.cb2);
+        TextView result = findViewById(R.id.tvResult);
+
+        findViewById(R.id.btnSubmit).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int id = rg.getCheckedRadioButtonId();
+                RadioButton rb = findViewById(id);
+                String gender = (rb != null) ? rb.getText().toString() : "None";
+                String hobbies = "";
+                if (cb1.isChecked()) hobbies += cb1.getText() + " ";
+                if (cb2.isChecked()) hobbies += cb2.getText();
+                result.setText("Gender: " + gender + "\nHobbies: " + hobbies);
+            }
+        });
+    }
+}
+
+--- AndroidManifest.xml --- (use BASE manifest, no changes)
+
+
+================================================================================
+  PROGRAM 5 - AlertDialog
+================================================================================
+
+--- activity_main.xml ---
+
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center">
+
+    <Button android:id="@+id/btnAlert"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Show Alert"/>
+
+</LinearLayout>
+
+--- MainActivity.java ---
+
+package com.example.myapp;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import android.content.DialogInterface;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Toast;
+
+public class MainActivity extends AppCompatActivity {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        findViewById(R.id.btnAlert).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new AlertDialog.Builder(MainActivity.this)
+                    .setTitle("Alert")
+                    .setMessage("Do you want to continue?")
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface d, int w) {
+                            Toast.makeText(MainActivity.this, "Yes clicked", Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .setNegativeButton("No", null)
+                    .show();
+            }
+        });
+    }
+}
+
+--- AndroidManifest.xml --- (use BASE manifest, no changes)
+
+
+================================================================================
+  PROGRAM 6 - ListView
+================================================================================
+
+--- activity_main.xml ---
+
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ListView android:id="@+id/listView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+</LinearLayout>
+
+--- MainActivity.java ---
+
+package com.example.myapp;
+import androidx.appcompat.app.AppCompatActivity;
+import android.os.Bundle;
+import android.widget.*;
+
+public class MainActivity extends AppCompatActivity {
+    String[] fruits = {"Apple", "Banana", "Mango", "Orange", "Grapes"};
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        ListView lv = findViewById(R.id.listView);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
+            android.R.layout.simple_list_item_1, fruits);
+        lv.setAdapter(adapter);
+
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, android.view.View v, int pos, long id) {
+                Toast.makeText(MainActivity.this, "Selected: " + fruits[pos], Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+}
+
+--- AndroidManifest.xml --- (use BASE manifest, no changes)
+
+
+================================================================================
+  PROGRAM 7 - Shared Preferences (Save & Retrieve Data)
+================================================================================
+
+--- activity_main.xml ---
+
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="20dp"
+    android:gravity="center">
+
+    <EditText android:id="@+id/etName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter Name"/>
+
+    <Button android:id="@+id/btnSave"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Save"/>
+
+    <Button android:id="@+id/btnLoad"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Load"/>
+
+    <TextView android:id="@+id/tvShow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"/>
+
+</LinearLayout>
+
+--- MainActivity.java ---
+
+package com.example.myapp;
+import androidx.appcompat.app.AppCompatActivity;
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.*;
+
+public class MainActivity extends AppCompatActivity {
+    SharedPreferences sp;
+    EditText etName;
+    TextView tvShow;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        etName = findViewById(R.id.etName);
+        tvShow = findViewById(R.id.tvShow);
+        sp = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+
+        findViewById(R.id.btnSave).setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                sp.edit().putString("name", etName.getText().toString()).apply();
+                Toast.makeText(MainActivity.this, "Saved!", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        findViewById(R.id.btnLoad).setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                tvShow.setText("Saved: " + sp.getString("name", "Nothing saved"));
+            }
+        });
+    }
+}
+
+--- AndroidManifest.xml --- (use BASE manifest, no changes)
+
+
+================================================================================
+  PROGRAM 8 - SQLite Database (Insert & Display)
+================================================================================
+
+--- activity_main.xml ---
+
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <EditText android:id="@+id/etName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter Name"/>
+
+    <Button android:id="@+id/btnInsert"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Insert"/>
+
+    <Button android:id="@+id/btnView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="View All"/>
+
+    <TextView android:id="@+id/tvData"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"/>
+
+</LinearLayout>
+
+--- MainActivity.java ---
+
+package com.example.myapp;
+import androidx.appcompat.app.AppCompatActivity;
+import android.content.ContentValues;
+import android.database.Cursor;
+import android.database.sqlite.*;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.*;
+
+public class MainActivity extends AppCompatActivity {
+    SQLiteDatabase db;
+    EditText etName;
+    TextView tvData;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        etName = findViewById(R.id.etName);
+        tvData = findViewById(R.id.tvData);
+
+        db = openOrCreateDatabase("MyDB", MODE_PRIVATE, null);
+        db.execSQL("CREATE TABLE IF NOT EXISTS users (name TEXT)");
+
+        findViewById(R.id.btnInsert).setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                ContentValues cv = new ContentValues();
+                cv.put("name", etName.getText().toString());
+                db.insert("users", null, cv);
+                Toast.makeText(MainActivity.this, "Inserted!", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        findViewById(R.id.btnView).setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Cursor c = db.rawQuery("SELECT * FROM users", null);
+                StringBuilder sb = new StringBuilder();
+                while (c.moveToNext()) sb.append(c.getString(0)).append("\n");
+                tvData.setText(sb.toString());
+                c.close();
+            }
+        });
+    }
+}
+
+--- AndroidManifest.xml --- (use BASE manifest, no changes)
+
+
+================================================================================
+  PROGRAM 9 - Broadcast Receiver (Airplane Mode)
+================================================================================
+
+--- activity_main.xml ---
+
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Toggle Airplane Mode to see Toast!"
+        android:textSize="18sp"
+        android:gravity="center"/>
+
+</LinearLayout>
+
+--- AirplaneReceiver.java ---
+
+package com.example.myapp;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.widget.Toast;
+
+public class AirplaneReceiver extends BroadcastReceiver {
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        boolean state = intent.getBooleanExtra("state", false);
+        if (state)
+            Toast.makeText(context, "Airplane Mode ON", Toast.LENGTH_LONG).show();
+        else
+            Toast.makeText(context, "Airplane Mode OFF", Toast.LENGTH_LONG).show();
+    }
+}
+
+--- MainActivity.java ---
+
+package com.example.myapp;
+import androidx.appcompat.app.AppCompatActivity;
+import android.os.Bundle;
+
+public class MainActivity extends AppCompatActivity {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+    }
+}
+
+--- AndroidManifest.xml --- (ADD inside <application> tag)
+
+        <receiver android:name=".AirplaneReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.AIRPLANE_MODE"/>
+            </intent-filter>
+        </receiver>
+
+
+================================================================================
+  PROGRAM 10 - Digital Clock (TextClock)
+================================================================================
+
+--- activity_main.xml ---
+
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center">
+
+    <TextClock
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:format12Hour="hh:mm:ss a"
+        android:format24Hour="HH:mm:ss"
+        android:textSize="48sp"/>
+
+</LinearLayout>
+
+--- MainActivity.java ---
+
+package com.example.myapp;
+import androidx.appcompat.app.AppCompatActivity;
+import android.os.Bundle;
+
+public class MainActivity extends AppCompatActivity {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+    }
+}
+
+--- AndroidManifest.xml --- (use BASE manifest, no changes)
+
+
+================================================================================
+  END OF ALL 10 PROGRAMS
+================================================================================
